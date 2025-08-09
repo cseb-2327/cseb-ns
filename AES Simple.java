@@ -7,7 +7,7 @@ public class AES {
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(128); // 128-bit AES
+        keyGen.init(128);
         SecretKey secretKey = keyGen.generateKey();
         System.out.print("Enter text to encrypt: ");
         String plainText = sc.nextLine();
