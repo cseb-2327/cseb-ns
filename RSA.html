@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple RSA Demo</title>
+</head>
+<body>
+  <h3>Enter a number message:</h3>
+  <input type="number" id="msg" value="65" />
+  <button onclick="runRSA()">Encrypt & Decrypt</button>
+
+  <p id="output"></p>
+
+  <script>
+    // Modular exponentiation
+    function modPow(base, exp, mod) {
+      let result = 1;
+      for (let i = 0; i < exp; i++) {
+        result = (result * base) % mod;
+      }
+      return result;
+    }
+
+    function runRSA() {
+      // Small primes (demo only)
+      const p = 61;
+      const q = 53;
+      const n = p * q;             // modulus
+      const phi = (p - 1) * (q - 1);
+
+      const e = 17;                // public exponent
+      const d = 413;               // private exponent (precomputed)
+
+      const m = parseInt(document.getElementById('msg').value);
+
+      const encrypted = modPow(m, e, n);
+      const decrypted = modPow(encrypted, d, n);
+
+      document.getElementById('output').innerHTML =
+        `Public Key (e,n): (${e}, ${n})<br>` +
+        `Private Key (d,n): (${d}, ${n})<br>` +
+        `Encrypted: ${encrypted}<br>` +
+        `Decrypted: ${decrypted}`;
+    }
+  </script>
+</body>
+</html>
