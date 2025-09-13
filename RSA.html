@@ -57,7 +57,7 @@ function RSA() {
 var gcd, p, q, no, n, t, e, i, x;
 gcd = function (a, b) { return (!b) ? a : gcd(b, a % b); };
 p = document.getElementById('p').value;
-11q = document.getElementById('q').value;
+q = document.getElementById('q').value;
 no = document.getElementById('msg').value;
 n = p * q;
 t = (p - 1) * (q - 1);
