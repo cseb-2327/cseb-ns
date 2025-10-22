@@ -1,0 +1,7 @@
+ ex 5 output cmd:
+ 
+keytool -genkeypair -alias serverkey -keyalg RSA -keysize 2048 -validity 365 -keystore serverkeystore.jks -storepass password -keypass password -dname "CN=localhost"
+javac Server.java
+java Server
+javac Client.java
+java Client
