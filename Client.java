@@ -1,34 +1,25 @@
 import javax.net.ssl.*;
 import java.io.*;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 
 public class Client {
     public static void main(String[] args) {
-        String host = "localhost";
-        int port = 9999;
-
         try {
-            // Trust all certificates - ONLY FOR TESTING
-            TrustManager[] trustAllCerts = new TrustManager[] {
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() { return null; }
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) { }
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) { }
-                }
-            };
+            // Trust the server keystore (for testing)
+            System.setProperty("javax.net.ssl.trustStore", "server.jks");   
+            System.setProperty("javax.net.ssl.trustStorePassword", "123456");
 
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustAllCerts, new SecureRandom());
+            SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory.getDefault();
+            SSLSocket socket = (SSLSocket) sf.createSocket("localhost", 9999);
 
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            SSLSocket sslSocket = (SSLSocket) sslSocketFactory.createSocket(host, port);
+            // Enable TLSv1.2
+            socket.setEnabledProtocols(new String[]{"TLSv1.2"});
 
-            PrintWriter output = new PrintWriter(sslSocket.getOutputStream(), true);
-            output.println("Hello, server!");
+            // Send data to server
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.println("Hello, server!");
 
-            output.close();
-            sslSocket.close();
+            out.close();
+            socket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
